@@ -1,0 +1,26 @@
+= TorusChess
+
+A game engine to play torus chess.
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a
+  commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== License
+
+This project is under GPL v3 so you're basically free to :
+ - use
+ - read
+ - copy
+ - distribute
+ - modify
+as much as you want, as long as you keep it as free as it is. Isn't it fun ?
+
+See link:LICENSE for more details
