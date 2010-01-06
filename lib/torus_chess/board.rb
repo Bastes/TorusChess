@@ -3,6 +3,30 @@ require 'torus_chess/piece'
 require 'torus_chess/cellular_map_patch'
 
 module TorusChess
+  # =The toric chess board.
+  #
+  # Quite like a chess board, only toric (northern and southern sides are
+  # connected, as well as eastern and western sides, wich makes backstabbing
+  # more fun).
+  # 
+  # Starting position is :
+  #  8 bR .. bB .. .. bB .. bR
+  #  7 bP bP .. .. .. .. bP ..
+  #  6 bK .. bP bQ b+ bP .. bK
+  #  5 .. .. .. bP bP .. .. ..
+  #  4 .. .. .. wP wP .. .. ..
+  #  3 wK .. wP wQ w+ wP .. wK
+  #  2 wP wP .. .. .. .. wP ..
+  #  1 wR .. wB .. .. wB .. wR
+  #    A  B  C  D  E  F  G  H
+  #
+  #  ( w, b = white, black
+  #    + = King
+  #    Q = Queen
+  #    R = Rook
+  #    K = Knight
+  #    B = Bishop
+  #    P = Pawn )
   class Board < CellularMap::Zone
     def initialize # :nodoc:
       super 0..7, 0..7, CellularMap::Map.new
