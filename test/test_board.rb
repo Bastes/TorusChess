@@ -71,5 +71,19 @@ class TestBoard < Test::Unit::TestCase
       assert_equal @board[7, 5], @board[-9, 13]
       assert_equal @board[5, 1], @board[7, 3] + [6, -10]
     }
+
+    should("let only chess pieces on it") {
+      assert_raise(ArgumentError) { @board[4, 0] = :whatever }
+      assert_raise(ArgumentError) { @board[1, 3] = ["something", "else"] }
+      assert_raise(ArgumentError) { @board[6, 7].content = "something" }
+      assert_raise(ArgumentError) { @board[6, 7].content = "something" }
+      @board[6, 7] = TorusChess::Piece[:white, :rook]
+      @board[3, 2] = [:black, :queen]
+      @board[0, 1] = [:bishop, 'white']
+      @board[4, 3] = nil
+      @board[5, 5].content = 'black knight'
+      @board[4, 1].content = :white_pawn
+      @board[7, 2].content = nil
+    }
   }
 end

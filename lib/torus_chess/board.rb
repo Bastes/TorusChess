@@ -48,13 +48,13 @@ module TorusChess
       position = [:white, :black].collect { |c|
         side = base.collect { |l| [:queen, :king].
           collect { |royal|
-            half = l.collect { |p| p ? [c, (p == :royal ? royal : p)] : nil }
+            half = l.collect { |p| p ? Piece[c, p == :royal ? royal : p] : nil }
             royal == :king ? half.reverse : half
           }.inject { |a, b| a + b } }
         c == :black ? side.reverse : side
       }.inject { |a, b| a + b }
       position.each_index { |y| position[y].each_index { |x|
-        self[x, y] = Piece[*position[y][x]] if position[y][x]
+        self[x, y] = position[y][x]
       } }
     end
   end

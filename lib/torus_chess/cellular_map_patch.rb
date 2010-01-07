@@ -5,6 +5,8 @@ module TorusChess
     end
 
     def []=(x, y, content) # :nodoc:
+      content = TorusChess::Piece[*content] unless content.nil? ||
+        content.is_a?(TorusChess::Piece)
       super x % 8, y % 8, content
     end
   end
