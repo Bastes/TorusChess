@@ -60,7 +60,7 @@ class TestBoard < Test::Unit::TestCase
           piece = cell.content
           flunk "Should be a #{expected.first} #{expected.last}" if piece.nil?
           assert_equal expected.first, piece.colour
-          assert_equal expected.last, piece.type
+          assert_equal expected.last, piece.rank
         else
           assert_nil cell.content
         end
@@ -85,5 +85,24 @@ class TestBoard < Test::Unit::TestCase
       @board[4, 1].content = :white_pawn
       @board[7, 2].content = nil
     }
+  }
+
+  context("A chess board") {
+    should_refuse [ [{[0,0] => nil}, [0, 1]] ]
+
+    pw = [:pawn, :white]
+    should_allow [
+      [{[0, 1] => pw}, [0, 2]],
+      [{[2, 1] => pw}, [2, 3]],
+      [{[5, 3] => pw}, [5, 4]],
+      [{[7, 4] => pw}, {[0, 5] => [:rook, :black]}, [0, 5]],
+      [{[6, 2] => pw}, {[5, 3] => [:knight, :black]}, [5, 3]],
+    ]
+    should_refuse [
+      [{[6, 4] => pw}, [6, 3]],
+      [{[4, 5] => pw}, [4, 4]],
+      [{[2, 1] => pw}, [3, 2]],
+      [{[3, 5] => pw}, [4, 6]],
+    ]
   }
 end

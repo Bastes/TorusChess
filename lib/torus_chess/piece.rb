@@ -1,12 +1,12 @@
 module TorusChess
   # What you put on a chess board, toric boards included.
   class Piece
-    # Colour and type of a piece.
-    attr_reader :colour, :type
+    # Colour and rank of a piece.
+    attr_reader :colour, :rank
 
-    # Acceptable colours and types
+    # Acceptable colours and ranks
     COLOURS = [:black, :white]
-    TYPES = [:pawn, :bishop, :knight, :rook, :queen, :king]
+    RANKS = [:pawn, :bishop, :knight, :rook, :queen, :king]
 
     # Access to pieces goes through this method.
     def self.[](*args)
@@ -16,7 +16,11 @@ module TorusChess
     end
 
     def ==(other) # :nodoc:
-      [@colour, @type] == [other.colour, other.type]
+      if other.is_a? Piece
+        [@colour, @rank] == [other.colour, other.rank]
+      else
+        false
+      end
     end
 
     protected
@@ -30,8 +34,8 @@ module TorusChess
         params = params.collect { |a| a.to_sym }
         params.reverse! unless COLOURS.include? params.first
         raise ArgumentError unless COLOURS.include? params.first
-        raise ArgumentError unless TYPES.include? params.last
-        @colour, @type = params
+        raise ArgumentError unless RANKS.include? params.last
+        @colour, @rank = params
       else
         raise ArgumentError
       end

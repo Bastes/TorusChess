@@ -3,6 +3,9 @@ require 'torus_chess/piece'
 require 'torus_chess/cellular_map_patch'
 
 module TorusChess
+  class RulesError < Exception # FIXME : would be quite better in its file.
+  end
+
   # =The toric chess board.
   #
   # Quite like a chess board, only toric (northern and southern sides are
@@ -56,6 +59,41 @@ module TorusChess
       position.each_index { |y| position[y].each_index { |x|
         self[x, y] = position[y][x]
       } }
+    end
+
+    # Attempts to execute a move, according to the rules and current position.
+    # piece:: is the starting position ([x, y])
+    # move:: is the target destination ([x, y])
+    # promotion:: use to promote a pawn explicitely to something else than queen
+    #
+    # A move breaking the rules will raise a TorusChess::RulesError.
+    def move(start, destination, promotion = :queen)
+      piece = self[*start].content
+      raise RulesError.new unless piece
+      vector = destination.zip(start).
+        collect { |d, s| d - s }.
+        collect { |v| [v % 8, (v % 8 - 8)] }.
+        collect { |a, b| a.abs <= b.abs ? a : b }
+      case piece.rank
+      when :pawn
+        black = (piece.colour == :black)
+        d = (black ? -1 : 1)
+        case v = [vector.first.abs, vector.last * d]
+        when [0, 1], [0, 2]
+          if v.last == 2
+            raise RulesError.new unless start.last == (black ? 6 : 1)
+            raise RulesError.new if self[start[0], start[0] + d].content
+          end
+          raise RulesError.new if self[*destination].content
+        when [1, 1]
+          other = self[*destination].content
+          raise RulesError.new if other.nil? || (other.colour == piece.colour)
+        else raise RulesError.new
+        end
+      else raise RulesError.new
+      end
+      self[*destination] = self[*start].content
+      self[*start] = nil
     end
   end
 end
